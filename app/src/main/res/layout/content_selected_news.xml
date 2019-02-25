@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".SelectedNewsActivity"
+    tools:showIn="@layout/activity_selected_news">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ScrollViewNews"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/lLayoutSelectedNews"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageSelectedNews"
+                android:contentDescription="@string/app_name"/>
+
+            <TextView
+                android:id="@+id/selectedNewsDiggs"
+                android:textColor="@color/textColor"
+                android:layout_width="match_parent"
+                android:layout_height = "wrap_content"
+                android:textSize="@dimen/digsTextSize"
+                android:textStyle="bold"
+                android:textAlignment="center"
+
+                 />
+            <TextView
+                android:textAlignment="center"
+                android:id="@+id/selectedNewsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/newsHeader"
+                android:textColor="@color/textColor"/>
+
+            <TextView
+                android:textColor="@color/textColor"
+                android:layout_marginTop="20dp"
+                android:id="@+id/selectedNewsInfoTextView"
+                android:textSize="@dimen/newsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

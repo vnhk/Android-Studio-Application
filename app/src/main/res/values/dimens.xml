@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="commentHeaderSize">10sp</dimen>
+    <dimen name="commentContentSize">10sp</dimen>
+    <dimen name="digsTextSize">35sp</dimen>
+    <dimen name="newsHeader">20sp</dimen>
+    <dimen name="newsContent">18sp</dimen>
+</resources>

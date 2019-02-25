@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Wykop</string>
+    <string name="action_settings">Opcje</string>
+    <string name="title_activity_news">Aktualności</string>
+    <string name="ButtonNext">Następny</string>
+    <string name="ButtonPrev">Poprzedni</string>
+    <string name="TextView">....</string>
+    <string name="TextViewLink">Otwórz</string>
+    <string name="ButtonGetNews">Aktualności</string>
+    <string name="title_activity_selected_news">Wiadomość</string>
+</resources>
