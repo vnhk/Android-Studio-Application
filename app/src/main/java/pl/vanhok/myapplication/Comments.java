@@ -15,6 +15,7 @@ class Comments{
     private String authorHref;
     private int nickColor;
     private int votesColor;
+    private boolean votesPositive;
 
     String getAuthor() {
         return author;
@@ -33,7 +34,7 @@ class Comments{
     }
 
     String getVotes() {
-        if(nickColor == Color.RED)
+        if(!votesPositive)
             return votes;
 
         return "+"+votes;
@@ -66,11 +67,14 @@ class Comments{
         postTime = commentInformation.selectFirst("time").text();
         votes = commentInformation.selectFirst("p.vC").attr("data-vc");
 
-        if(Integer.parseInt(votes) > 0)
+        if(Integer.parseInt(votes) > 0) {
             votesColor = Color.GREEN;
-        else
+            votesPositive = true;
+        }
+        else {
             votesColor = Color.RED;
-
+            votesPositive = false;
+        }
         commentText = wb.selectFirst("div.text > p").text();
     }
 
