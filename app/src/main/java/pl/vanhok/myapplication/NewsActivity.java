@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
 
 class News{
 
-    private String href;
-    private String headerText;
-    private String mainText;
+    private String href = "error";
+    private String headerText  = "error";
+    private String mainText  = "error";
+    private String imageSrc  = "error";
 
     void setReady(boolean ready) {
         this.ready = ready;
@@ -25,14 +27,33 @@ class News{
         return ready;
     }
 
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
     private boolean ready = false;
 
     News(Element el) {
-        Elements aTag = el.getElementsByTag("a");
-        headerText = aTag.get(0).text();
-        href = aTag.get(0).attr("href");
-        mainText = (el.getElementsByClass("description")).get(0).text();
-        
+        Element e;
+        if((e = el.selectFirst("div.lcontrast.m-reset-margin > h2 > a"))!=null) {
+            headerText = e.text();
+            href = e.attr("href");
+        }
+        if((e = el.selectFirst("div.lcontrast.m-reset-margin > div.description > p"))!=null) {
+            mainText = e.text();
+        }
+        if((e = el.selectFirst("div.media-content.m-reset-float"))!=null) {
+            if ((e = el.selectFirst("img.lazy"))!=null) {
+                imageSrc = e.attr("src");
+                if (imageSrc.length() < 5) {
+                    imageSrc = e.attr("data-original");
+                    if (imageSrc.length() < 1) {
+                        imageSrc = "https://www.wykop.pl/cdn/c3397993/link_6mVfKEjgYUA0AK81pM7MuqBdsgHk179A,w207h139.jpg";
+                    }
+                }
+            }
+        }
+
     }
 
     String getHeaderText() {
@@ -52,6 +73,7 @@ public class NewsActivity extends AppCompatActivity {
     private int number = 0;
     private ArrayList<News> news;
     private TextView result;
+    private ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +81,26 @@ public class NewsActivity extends AppCompatActivity {
         Thread createNews = new Thread(new Runnable() {
             @Override
             public void run() {
+                iv = findViewById(R.id.imageNews);
                     html = new WebPage("https://www.wykop.pl/");
-                    Elements elements = html.getHtml().getElementsByClass("lcontrast m-reset-margin");
+                    Elements elements = html.getHtml().select("div.article.clearfix.preview.dC");
+                    if(elements != null) {
+                        int i = 0, y = 0;
+                        while (i < elements.size()) {
+                            while (y < elements.size()) {
+                                if (elements.get(y) == null) {
+                                    y++;
+                                } else {
+                                    news.add(new News(elements.get(y)));
+                                    y++;
+                                    i++;
+                                }
+                            }
 
-                    int i =0,y =0;
-                    while(i < elements.size()) {
-                       while(y<elements.size()) {
-                           if (elements.get(y) == null) {
-                               y++;
-                           } else {
-                               news.add(new News(elements.get(y)));
-                               y++;
-                               i++;
-                           }
-                       }
-
+                        }
                     }
             }
         });
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
@@ -102,6 +125,8 @@ public class NewsActivity extends AppCompatActivity {
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(news.size()<=0)
+                    return;
                 --number;
                 if(number<0)
                     number = news.size()-1;
@@ -112,6 +137,8 @@ public class NewsActivity extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(news.size()<=0)
+                    return;
                 ++number;
                 if(number>news.size()-1)
                     number = 0;
@@ -135,6 +162,9 @@ public class NewsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        ImageNews.getImage(iv,news.get(number).getImageSrc(),NewsActivity.this);
+
                         result.setText(builder.toString());
                     }
                 });

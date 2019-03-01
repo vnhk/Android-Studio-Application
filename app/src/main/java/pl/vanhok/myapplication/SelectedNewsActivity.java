@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 
@@ -50,9 +52,7 @@ public class SelectedNewsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Picasso.with(SelectedNewsActivity.this)
-                                .load(news.getImageHref())
-                                .into(iv);
+                        ImageNews.getImage(iv,news.getImageHref(),SelectedNewsActivity.this);
 
 
                        tvHeader.setText(news.getHeaderText());
