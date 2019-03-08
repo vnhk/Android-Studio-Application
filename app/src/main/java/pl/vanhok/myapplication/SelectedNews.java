@@ -47,17 +47,21 @@ class SelectedNews {
         return hot;
     }
 
-    SelectedNews(WebPage wb){
-        Element article = wb.getHtml().selectFirst(".article.fullview.clearfix.dC");
+    SelectedNews(WebPage wb, String imageSrc){
+        Element article = wb.getHtml().selectFirst(".article.fullview.clearfix");
         href = wb.getWebAddress();
-        Element diggs = article.selectFirst("div > a > span");
-        amountOfdiggs = diggs.text();
+        Element diggs = article.selectFirst("div.diggbox > a > span");
+        if(diggs!=null)
+            amountOfdiggs = "+"+diggs.text();
+        else
+            amountOfdiggs = "+0";
+
         if(article.selectFirst("div.diggbox > i")!=null)
             hot = true;
         else
             hot = false;
 
-        imageHref = article.selectFirst("a[href] > img").attr("src");
+        imageHref = imageSrc;
 
         headerText = article.selectFirst("h2").text();
         mainText = article.selectFirst("p.text").text();

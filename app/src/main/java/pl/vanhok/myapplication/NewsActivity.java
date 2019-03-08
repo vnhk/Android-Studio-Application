@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 class News{
 
+    private final String defaultImageSrc = "https://www.wykop.pl/cdn/c2526412/no-picture,w207h139.jpg";
+
     private String href = "error";
     private String headerText  = "error";
     private String mainText  = "error";
@@ -42,17 +44,20 @@ class News{
         if((e = el.selectFirst("div.lcontrast.m-reset-margin > div.description > p"))!=null) {
             mainText = e.text();
         }
-        if((e = el.selectFirst("div.media-content.m-reset-float"))!=null) {
-            if ((e = el.selectFirst("img.lazy"))!=null) {
-                imageSrc = e.attr("src");
-                if (imageSrc.length() < 5) {
+        if((e = el.selectFirst("div.media-content"))!=null) {
+
+            if((e = e.select("img").first())!=null){
+                imageSrc = e.absUrl("src");
+                if(imageSrc.length()<1)
+                    imageSrc = e.attr("src");
+                if(imageSrc.length()<1)
                     imageSrc = e.attr("data-original");
-                    if (imageSrc.length() < 1) {
-                        imageSrc = "https://www.wykop.pl/cdn/c3397993/link_6mVfKEjgYUA0AK81pM7MuqBdsgHk179A,w207h139.jpg";
-                    }
-                }
             }
+            else
+                imageSrc = defaultImageSrc;
         }
+        else
+            imageSrc = defaultImageSrc;
 
     }
 
@@ -176,6 +181,7 @@ public class NewsActivity extends AppCompatActivity {
         if(news.get(number).isReady()){
             Intent i = new Intent(this,SelectedNewsActivity.class);
             i.putExtra("WykopNews",news.get(number).getHref());
+            i.putExtra("ImageSrc",news.get(number).getImageSrc());
             startActivity(i);
         }
 

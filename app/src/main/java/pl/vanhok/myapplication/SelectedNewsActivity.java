@@ -33,11 +33,12 @@ public class SelectedNewsActivity extends AppCompatActivity {
         final ImageView iv = findViewById(R.id.imageSelectedNews);
 
         final Intent in = getIntent();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 html = new WebPage(in.getCharSequenceExtra("WykopNews").toString());
-                news = new SelectedNews(html);
+                news = new SelectedNews(html, in.getStringExtra("ImageSrc"));
                 lLayout = findViewById(R.id.lLayoutSelectedNews);
                 final TextView tvHeader = findViewById(R.id.selectedNewsHeader);
                 final TextView tvInfoText = findViewById(R.id.selectedNewsInfoTextView);
